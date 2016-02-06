@@ -1,0 +1,12 @@
+---
+title: "Class Notes"
+author: "Jennifer Kidson"
+date: "February 5, 2016"
+output: html_document
+---
+
+## Week 5
+
+as.factor for month:
+doesnt think of box plots as x vs y graph, so it needs the x axis to be categorical
+categories for colors might need to be factors

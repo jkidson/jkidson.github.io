@@ -137,7 +137,10 @@ xls = './data/co2_europa.xls'
 
 print(getwd())
 co2 = read_excel(xls, skip=12)
-co2
+names(co2) = c('country', 1970:2014)
+  library(dplyr)
+  library(tidyr)
+co2l = gather(co2,"year","n", 2:46)
 ```
 
 ```{r popn}
@@ -146,4 +149,9 @@ library(tidyr)
 
 popn = read_csv(
   'https://raw.githubusercontent.com/datasets/population/master/data/population.csv')
+names(popn) = c('country','code','year','popn')
+```
+
+```{r join co2 popn}
+cpop = left_join(co2l, popn, by=c('country','year')) # Error: cannot join on columns 'year' x 'year': Can't join on 'year' x 'year' because of incompatible types (integer / character) 
 ```
