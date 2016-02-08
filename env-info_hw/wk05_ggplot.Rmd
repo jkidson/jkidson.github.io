@@ -140,7 +140,8 @@ co2 = read_excel(xls, skip=12)
 names(co2) = c('country', 1970:2014)
   library(dplyr)
   library(tidyr)
-co2l = gather(co2,"year","n", 2:46)
+co2l = gather(co2,"year","emit", -country)
+co2l$year = as.numeric(co2l$year) # Convert "year" column to numeric so that it can be joined to popn
 ```
 
 ```{r popn}
@@ -152,6 +153,28 @@ popn = read_csv(
 names(popn) = c('country','code','year','popn')
 ```
 
-```{r join co2 popn}
-cpop = left_join(co2l, popn, by=c('country','year')) # Error: cannot join on columns 'year' x 'year': Can't join on 'year' x 'year' because of incompatible types (integer / character) 
+
+## Task 1 
+_**Task**. Summarize the total emissions by country  (not World or EU28) per capita across years from your long format table and return the top 5 emitting countries for **2014**._
+```{r Task 1}
+library(dplyr)
+cpop = left_join(co2l, popn, by=c('country','year'))
+cpop %>%
+  mutate(pcemit = emit/popn) %>%
+  filter(year %in% 2014) %>%
+  subset(country != c("World","EU28")) %>%
+  arrange(desc(pcemit)) %>%
+  head(n=5)
 ```
+
+
+## Task 2
+_**Task**. Summarize the total emissions by country (not World or EU28) per capita across years from your long format table and return the top 5 emitting countries on **average** across all years._ 
+```{r Task 2}
+cpop %>%
+  mutate(pcemit = emit/popn) %>%
+  group_by(country) %>%
+  summarise(avtot = mean(pcemit)) %>%
+  arrange(desc(avtot)) %>%
+  head(n=5)
+  ```

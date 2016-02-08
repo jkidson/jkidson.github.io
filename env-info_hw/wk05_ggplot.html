@@ -257,7 +257,7 @@ left_join(songs, artists, by='name')</code></pre>
 library(readxl) # install.packages('readxl')
 
 # xls downloaded from http://edgar.jrc.ec.europa.eu/news_docs/CO2_1970-2014_dataset_of_CO2_report_2015.xls
-xls = '../env-info_hw/data/co2_europa.xls'
+xls = './data/co2_europa.xls'
 
 print(getwd())</code></pre>
 <pre><code>## [1] &quot;/Users/jenniferkidson/Documents/Bren Docs/296 Informatics/jkidson.github.io/env-info_hw&quot;</code></pre>
@@ -266,42 +266,58 @@ print(getwd())</code></pre>
 ## DEFINEDNAME: 21 00 00 01 0b 00 00 00 01 00 00 00 00 00 00 0d 3b 00 00 0c 00 e0 00 00 00 2c 00 
 ## DEFINEDNAME: 21 00 00 01 0b 00 00 00 01 00 00 00 00 00 00 0d 3b 00 00 0c 00 e0 00 00 00 2c 00 
 ## DEFINEDNAME: 21 00 00 01 0b 00 00 00 01 00 00 00 00 00 00 0d 3b 00 00 0c 00 e0 00 00 00 2c 00</code></pre>
-<pre class="r"><code>co2</code></pre>
-<pre><code>## Source: local data frame [220 x 46]
-## 
-##                Country  1970.000000  1971.000000  1972.000000  1973.000000
-##                  (chr)        (dbl)        (dbl)        (dbl)        (dbl)
-## 1          Afghanistan  1813.981234  1840.794051  1794.831482  1817.997422
-## 2              Albania  4435.433037  4425.968296  5035.309230  4638.057137
-## 3              Algeria 18850.745443 22226.320843 34278.432478 46375.728534
-## 4       American Samoa     6.183023     6.327022     6.462429     6.587474
-## 5               Angola  8946.495011  8532.101439 10382.218539 11365.512295
-## 6             Anguilla     2.168006     2.168036     2.263426     2.108604
-## 7  Antigua and Barbuda   196.161773   203.964395   244.721752   263.402867
-## 8            Argentina 87478.401090 87827.313960 88888.066154 93076.186184
-## 9              Armenia 10951.012839 10972.887313 11783.384976 12844.589903
-## 10               Aruba    40.380782    40.635025    41.138578    41.949184
-## ..                 ...          ...          ...          ...          ...
-## Variables not shown: 1974.000000 (dbl), 1975.000000 (dbl), 1976.000000
-##   (dbl), 1977.000000 (dbl), 1978.000000 (dbl), 1979.000000 (dbl),
-##   1980.000000 (dbl), 1981.000000 (dbl), 1982.000000 (dbl), 1983.000000
-##   (dbl), 1984.000000 (dbl), 1985.000000 (dbl), 1986.000000 (dbl),
-##   1987.000000 (dbl), 1988.000000 (dbl), 1989.000000 (dbl), 1990.000000
-##   (dbl), 1991.000000 (dbl), 1992.000000 (dbl), 1993.000000 (dbl),
-##   1994.000000 (dbl), 1995.000000 (dbl), 1996.000000 (dbl), 1997.000000
-##   (dbl), 1998.000000 (dbl), 1999.000000 (dbl), 2000.000000 (dbl),
-##   2001.000000 (dbl), 2002.000000 (dbl), 2003.000000 (dbl), 2004.000000
-##   (dbl), 2005.000000 (dbl), 2006.000000 (dbl), 2007.000000 (dbl),
-##   2008.000000 (dbl), 2009.000000 (dbl), 2010.000000 (dbl), 2011.000000
-##   (dbl), 2012.000000 (dbl), 2013.000000 (dbl), 2014.000000 (dbl)</code></pre>
+<pre class="r"><code>names(co2) = c('country', 1970:2014)
+  library(dplyr)
+  library(tidyr)
+co2l = gather(co2,&quot;year&quot;,&quot;emit&quot;, -country)
+co2l$year = as.numeric(co2l$year) # Convert &quot;year&quot; column to numeric so that it can be joined to popn</code></pre>
 <pre class="r"><code>library(readr)
 library(tidyr)
 
 popn = read_csv(
   'https://raw.githubusercontent.com/datasets/population/master/data/population.csv')
 names(popn) = c('country','code','year','popn')</code></pre>
-<pre class="r"><code>#cpop = left_join(co2, popn, by=c('country','year'))</code></pre>
 </div>
+</div>
+<div id="task-1" class="section level2">
+<h2>Task 1</h2>
+<p><em><strong>Task</strong>. Summarize the total emissions by country (not World or EU28) per capita across years from your long format table and return the top 5 emitting countries for <strong>2014</strong>.</em></p>
+<pre class="r"><code>library(dplyr)
+cpop = left_join(co2l, popn, by=c('country','year'))
+cpop %&gt;%
+  mutate(pcemit = emit/popn) %&gt;%
+  filter(year %in% 2014) %&gt;%
+  subset(country != c(&quot;World&quot;,&quot;EU28&quot;)) %&gt;%
+  arrange(desc(pcemit)) %&gt;%
+  head(n=5)</code></pre>
+<pre><code>## Source: local data frame [5 x 6]
+## 
+##                country  year      emit  code    popn     pcemit
+##                  (chr) (dbl)     (dbl) (chr)   (dbl)      (dbl)
+## 1                Qatar  2014  88750.72   QAT 2267916 0.03913316
+## 2               Kuwait  2014  98558.59   KWT 3479371 0.02832655
+## 3  Trinidad and Tobago  2014  34017.47   TTO 1344235 0.02530619
+## 4 United Arab Emirates  2014 201052.18   ARE 9445624 0.02128522
+## 5                 Oman  2014  74288.47   OMN 3926492 0.01891981</code></pre>
+</div>
+<div id="task-2" class="section level2">
+<h2>Task 2</h2>
+<p><em><strong>Task</strong>. Summarize the total emissions by country (not World or EU28) per capita across years from your long format table and return the top 5 emitting countries on <strong>average</strong> across all years.</em></p>
+<pre class="r"><code>cpop %&gt;%
+  mutate(pcemit = emit/popn) %&gt;%
+  group_by(country) %&gt;%
+  summarise(avtot = mean(pcemit)) %&gt;%
+  arrange(desc(avtot)) %&gt;%
+  head(n=5)</code></pre>
+<pre><code>## Source: local data frame [5 x 2]
+## 
+##                country      avtot
+##                  (chr)      (dbl)
+## 1                Qatar 0.06285535
+## 2 United Arab Emirates 0.04000397
+## 3           Luxembourg 0.02944910
+## 4              Bahrain 0.02109961
+## 5              Estonia 0.02080460</code></pre>
 </div>
 
 
