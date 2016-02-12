@@ -10,3 +10,6 @@ output: html_document
 as.factor for month:
 doesnt think of box plots as x vs y graph, so it needs the x axis to be categorical
 categories for colors might need to be factors
+
+## Week 6
+

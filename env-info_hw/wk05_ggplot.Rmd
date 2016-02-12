@@ -167,6 +167,9 @@ cpop %>%
   head(n=5)
 ```
 
+```{r}
+
+```
 
 ## Task 2
 _**Task**. Summarize the total emissions by country (not World or EU28) per capita across years from your long format table and return the top 5 emitting countries on **average** across all years._ 
