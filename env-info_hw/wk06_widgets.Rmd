@@ -107,6 +107,22 @@ You should see the slider popout of a gear icon in th upper left of your Plots p
 
 **Task.** Add another R chunk with a slider adjusting the number of bins from 5 to 50, with step increments of 5.
 
+```{r manipulate Task, eval = F}
+library(manipulate) # install.packages('manipulate')
+
+manipulate({
+  
+  faithful %>%
+    ggplot(aes(eruptions)) + 
+    geom_histogram(aes(y = ..density..),  bins = a) +
+    geom_density(color='blue', size=2) +
+    xlab('duration (minutes)') +
+    ylab('frequency density') +
+    ggtitle('geyser eruption duration')
+  
+}, a = slider(min = 5, max = 50, initial = 5, label = 'bandwidth adjustment', step = 5))
+```
+
 ### `ggvis`
 
 You can do something similar with [ggvis](http://ggvis.rstudio.com/0.1/quick-examples.html).
@@ -145,6 +161,23 @@ cars %>%
 ```
 
 **Task.** Add another R chunk that only applies the `add_tooltip` on mouse click.
+
+```{r ggvis add_tooltip Task, eval=FALSE}
+cars = mtcars %>%
+  add_rownames('model') %>%        # dplyr drops rownames
+  mutate(id = row_number()) # add an id column to use ask the key
+
+all_values <- function(x) {
+  if(is.null(x)) return(NULL)
+  row <- cars[cars$id == x$id, ]
+  paste0(names(row), ": ", format(row), collapse = "<br/>")
+}
+
+cars %>% 
+  ggvis(x = ~wt, y = ~mpg, key := ~id) %>%
+  layer_points() %>%
+  add_tooltip(all_values, 'click')
+```
 
 ## htmlwidgets
 
@@ -204,6 +237,16 @@ datatable(iris, options = list(dom = 'tp'))
 Note how the [`dom` option](http://datatables.net/reference/option/dom) removed other elements from display such as the Show (`l`ength), Search (`f`iltering) and Showing (`i`nformation) elements from the default, but kept the `t`able and `p`agination control.
 
 **Task.** Output the table again with `datatable` and set the `options` to have `pagelength` of just 5 rows. (See `?datatable` and <http://rstudio.github.io/DT/>).
+
+```{r datatable Task}
+library(DT) # install.packages('DT')
+
+# default datatable
+datatable(iris)
+
+# remove document elements
+datatable(iris, options = list(dom = 'tp', pageLength = 5))
+```
 
 ### `metricsgraphics`: line, bar, scatter
 
