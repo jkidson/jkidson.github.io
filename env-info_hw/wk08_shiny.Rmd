@@ -6,5 +6,12 @@ output: html_document
 ---
 
 ```{r Shiny, eval=F}
-shiny::runGitHub()
+#shiny::runGitHub(jkidson.github.io/env-info_hw/test_shiny1/ui.R)
+
+shiny::runGitHub("jkidson", username = getOption("jkidson"),
+    ref = "master", subdir = "env-info_hw/test_shiny1/", port = NULL,
+    launch.browser = getOption("shiny.launch.browser", interactive()))
 ```
+
+# Downloading https://github.com//test_shiny1/archive/master.tar.gz
+# Error in getOct(block, 100, 8) : invalid octal digit
