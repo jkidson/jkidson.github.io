@@ -1,0 +1,10 @@
+---
+title: "Week 8 Shiny"
+author: "Jennifer Kidson"
+date: "February 26, 2016"
+output: html_document
+---
+
+```{r Shiny, eval=F}
+shiny::runGitHub()
+```
