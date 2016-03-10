@@ -1,10 +1,9 @@
 # Jennifer Kidson
 # Test Shiny 
 library(shiny)
-
-ui = fluidPage(
+shinyUI(fluidPage(
   
-  titlepanel("Hello World!"),
+  titlePanel("Hello World!"),
   
   sidebarLayout(
     sidebarPanel(
@@ -18,9 +17,8 @@ ui = fluidPage(
     mainPanel(
       plotOutput("distPlot")
     )
-    )
   )
-
+))
 
 server = function(input, output) {
   
