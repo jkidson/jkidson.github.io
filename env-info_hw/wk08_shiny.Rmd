@@ -5,7 +5,7 @@ date: "February 26, 2016"
 output: html_document
 ---
 
-```{r Shiny, eval=F}
+```{r Shiny individual, eval=F}
 #shiny::runGitHub(jkidson.github.io/env-info_hw/test_shiny1)
 
 shiny::runGitHub("jkidson", username = getOption("jkidson"),
@@ -17,7 +17,7 @@ shiny::runGitHub("jkidson", username = getOption("jkidson"),
 Link to example shiny app: 
 https://jkidson.shinyapps.io/test_shiny1/
 
-```{r Shiny, eval=F}
+```{r Shiny group, eval=F}
 #shiny::runGitHub(ccimpacts.github.io/wk08_shiny)
 
 shiny::runGitHub("jkidson", username = getOption("jkidson"),
@@ -27,4 +27,4 @@ shiny::runGitHub("jkidson", username = getOption("jkidson"),
 ```
 
 Link to group shiny app:
-https://jkidson.shinyapps.io/wk08_shiny/ (may not be working, having problems with data)
+https://jkidson.shinyapps.io/wk08_shiny/ (graph is still having issues - check the Nina box!)
