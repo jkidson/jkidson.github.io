@@ -16,3 +16,15 @@ shiny::runGitHub("jkidson", username = getOption("jkidson"),
 
 Link to example shiny app: 
 https://jkidson.shinyapps.io/test_shiny1/
+
+```{r Shiny, eval=F}
+#shiny::runGitHub(ccimpacts.github.io/wk08_shiny)
+
+shiny::runGitHub("jkidson", username = getOption("jkidson"),
+    ref = "master", subdir = "ccimpacts.github.io/wk08_shiny", port = NULL,
+    launch.browser = getOption("shiny.launch.browser", interactive()))
+
+```
+
+Link to group shiny app:
+https://jkidson.shinyapps.io/wk08_shiny/ (may not be working, having problems with data)
